@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: createMaterialColor(const Color(0xFF00297A)),
       ),
-      home: const DashboardPage(),
+      home: const LoginPage(),
     );
   }
 }
