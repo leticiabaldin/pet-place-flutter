@@ -22,9 +22,13 @@ class CardProductComponent extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
         ),
         onPressed: () {},
         child: Card(
+          elevation: 0,
           child: Column(
             children: [
               Image.asset("assets/bolinha.png"),
@@ -34,7 +38,6 @@ class CardProductComponent extends StatelessWidget {
                 ),
                 height: 1,
                 decoration: const BoxDecoration(
-                  color: Color(0x20000000),
                 ),
               ),
               Text(
