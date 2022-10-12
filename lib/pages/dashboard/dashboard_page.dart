@@ -43,16 +43,7 @@ class DashboardPage extends StatelessWidget {
                       child: TextField(
                         textInputAction: TextInputAction.search,
                         decoration: InputDecoration(
-                          suffix: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: AppColors.secondary,
-                            ),
-                            child: IconButton(
-                              onPressed: () {},
-                              icon: const Icon(Icons.search),
-                            ),
-                          ),
+                          labelText: 'Search here!',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
                             borderSide: BorderSide(
@@ -121,7 +112,7 @@ class DashboardPage extends StatelessWidget {
               width: 960,
             ),
             Row(
-              children:const  [
+              children: const [
                 CardProductComponent(),
               ],
             )

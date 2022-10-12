@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_place/pages/details/details_page.dart';
 import 'package:pet_place/styles/colors.dart';
 
 class CardProductComponent extends StatelessWidget {
@@ -11,14 +12,15 @@ class CardProductComponent extends StatelessWidget {
       height: 236,
       margin: const EdgeInsets.only(left: 24),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(
-              offset: Offset(0, 2),
-              color: Color(0x25000000),
-              blurRadius: 2,
-            )
-          ],),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: const [
+          BoxShadow(
+            offset: Offset(0, 2),
+            color: Color(0x25000000),
+            blurRadius: 2,
+          )
+        ],
+      ),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Colors.white,
@@ -26,7 +28,14 @@ class CardProductComponent extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
           ),
         ),
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DetailsPage(),
+            ),
+          );
+        },
         child: Card(
           elevation: 0,
           child: Column(
@@ -37,8 +46,7 @@ class CardProductComponent extends StatelessWidget {
                   vertical: 8,
                 ),
                 height: 1,
-                decoration: const BoxDecoration(
-                ),
+                decoration: const BoxDecoration(),
               ),
               Text(
                 'Bolinha do mal',

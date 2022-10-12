@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pet_place/pages/createAccount/create_account_page.dart';
 import 'package:pet_place/pages/dashboard/dashboard_page.dart';
 
 import '../../styles/colors.dart';
@@ -34,7 +35,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: Form(
                     autovalidateMode: AutovalidateMode.disabled,
                     child: Padding(
-                      padding: const EdgeInsets.fromLTRB(32, 40, 32, 50),
+                      padding: const EdgeInsets.fromLTRB(32, 24, 32, 50),
                       child: Column(
                         children: [
                           const SizedBox(height: 56),
@@ -94,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 72),
+                          const SizedBox(height: 64),
                           SizedBox(
                             width: double.maxFinite,
                             height: 48,
@@ -124,6 +125,32 @@ class _LoginPageState extends State<LoginPage> {
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.w700,
                                 ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 48),
+                          Container(
+                            alignment: Alignment.topLeft,
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: TextButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.white,
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        const CreateAccountPage(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Não possui uma conta? Clique aqui.',
+                                style: TextStyle(
+                                    color: AppColors.primary,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600),
                               ),
                             ),
                           ),
