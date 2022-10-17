@@ -2,6 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:pet_place/pages/details/details_page.dart';
 import 'package:pet_place/styles/colors.dart';
 
+class Product {
+  const Product({
+    required this.id,
+    required this.name,
+    required this.image,
+    required this.price,
+    required this.description,
+    required this.rating,
+  });
+
+  final String id;
+  final String name;
+  final String image;
+  final double price;
+  final String description;
+  final List<int> rating;
+}
+
 class CardProductComponent extends StatelessWidget {
   const CardProductComponent({Key? key}) : super(key: key);
 
