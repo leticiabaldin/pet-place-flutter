@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+// ignore: unused_import
 import 'package:pet_place/pages/dashboard/dashboard_page.dart';
 import 'package:pet_place/pages/login/login_page.dart';
 import 'firebase_options.dart';

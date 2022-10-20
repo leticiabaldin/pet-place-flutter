@@ -240,7 +240,7 @@ class CreateAccountPage extends StatelessWidget {
                             child: ElevatedButton(
                               onPressed: () {},
                               style: ElevatedButton.styleFrom(
-                                primary: AppColors.secondary,
+                                backgroundColor: AppColors.secondary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: AppColors.secondary,
+                                backgroundColor: AppColors.secondary,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -134,7 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                             padding: const EdgeInsets.only(bottom: 12),
                             child: TextButton(
                               style: ElevatedButton.styleFrom(
-                                primary: Colors.white,
+                                backgroundColor: Colors.white,
                               ),
                               onPressed: () {
                                 Navigator.push(
