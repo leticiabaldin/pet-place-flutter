@@ -1,11 +1,88 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:pet_place/components/header_widget.dart';
+import 'package:pet_place/components/product_dialog_widget.dart';
 import 'package:pet_place/styles/colors.dart';
 
-import '../../components/card_component.dart';
+class Product {
+  const Product({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.description,
+  });
 
+  final String id;
+  final String name;
+  final double price;
+  final String description;
 
-class DashboardPage extends StatelessWidget {
+  String getFormattedPrice() {
+    final formatPrice = NumberFormat('###,##.00', 'pt-BR');
+    return 'R\$${formatPrice.format(price)}';
+  }
+}
+
+class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
+
+  @override
+  State<DashboardPage> createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  final productsCollection = FirebaseFirestore.instance
+      .collection('products'); //conexão com a collections do banco de dados
+
+  Future<void> openRemoveProductDialog(Product product) async {
+    await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Tem certeza que deseja remover o item ${product.name}?'),
+        content: const Text('Essa ação não pode ser desfeita'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancelar'),
+          ),
+          const SizedBox(width: 8),
+          TextButton(
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).errorColor,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+              removeProduct(product);
+            },
+            child: const Text('Remover'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> removeProduct(Product product) async {
+    await productsCollection.doc(product.id).delete();
+  }
+
+  Future<void> openCreateProductDialog() async {
+    await showDialog(
+      context: context,
+      builder: (context) => const ProductDialogWidget(),
+    );
+  }
+
+  Future<void> openUpdateProductDialog(Product product) async {
+    await showDialog(
+      context: context,
+      builder: (context) => ProductDialogWidget(product: product),
+    );
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -14,116 +91,126 @@ class DashboardPage extends StatelessWidget {
       appBar: AppBar(
         title: Image.asset('assets/logo.png'),
         titleSpacing: 182,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            context.go('/');
+          },
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 48),
+            child: TextButton.icon(
+              onPressed:(){
+                context.go('/user-profile');
+              },
+              icon: const Icon(
+                Icons.account_circle_outlined,
+                color: Colors.white,
+              ),
+              label: const Text(
+                'Meu perfil',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+            ),
+          ),
+        ],
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return Center(
-            child: SingleChildScrollView(
-              child: Container(
-                width: double.maxFinite,
-                constraints: const BoxConstraints(maxWidth: 1076),
-                margin: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 88 ,
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Populares',
-                          style: TextStyle(
-                            fontSize: 28,
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                       const Spacer(),
-                        Row(
-                          children: [
-                            SizedBox(
-                              width: 288,
-                              height: 40,
-                              child: TextField(
-                                textInputAction: TextInputAction.search,
-                                decoration: InputDecoration(
-                                  labelText: 'Search here!',
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1,
-                                      style: BorderStyle.solid,
-                                    ),
-                                  ),
-                                  disabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                      color: AppColors.primary,
-                                      width: 1,
-                                      style: BorderStyle.solid,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1,
-                                        style: BorderStyle.solid),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                    borderSide: BorderSide(
-                                        color: AppColors.primary,
-                                        width: 1,
-                                        style: BorderStyle.solid),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(
-                              width: 40,
-                              height: 40,
-                              margin: const EdgeInsets.only(
-                                left: 8,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.secondary,
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                  color: AppColors.primary,
-                                  width: 1,
-                                ),
-                              ),
-                              child: IconButton(
-                                onPressed: () {},
-                                icon: Icon(
-                                  Icons.shopping_cart,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(
-                        vertical: 16,
+            child: Container(
+              width: double.maxFinite,
+              height: double.maxFinite,
+              constraints: const BoxConstraints(maxWidth: 1076),
+              margin: const EdgeInsets.symmetric(
+                horizontal: 16,
+                vertical: 16,
+              ),
+              child: Column(
+                children: [
+                  HeaderWidget(
+                    title: 'Produtos',
+                    trailing: SizedBox(
+                      height: 40,
+                      child: TextButton.icon(
+                        onPressed: openCreateProductDialog,
+                        icon: const Icon(Icons.add),
+                        label: const Text('Adicionar item'),
                       ),
-                      color: const Color(0xFF00297A),
-                      height: 1.2,
-                      width: double.maxFinite,
                     ),
-                    Row(
-                      children: const [
-                        CardProductComponent(),
-                      ],
-                    )
-                  ],
-                ),
+                  ),
+                  Expanded(
+                    child: StreamBuilder(
+                        stream: productsCollection.orderBy('name').snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          if (snapshot.hasError) {
+                            return Center(
+                              child: Text(
+                                (snapshot.error as FirebaseException).message ??
+                                    'Um erro desconhecido ocorreu',
+                              ),
+                            );
+                          }
+                          final data = snapshot.data
+                              as QuerySnapshot<Map<String, dynamic>>;
+                          final products = data.docs
+                              .map(
+                                (doc) => Product(
+                                  id: doc.id,
+                                  name: doc.data()['name'],
+                                  price: doc.data()['price'],
+                                  description: doc.data()['description'],
+                                ),
+                              )
+                              .toList();
+
+                          return ListView.builder(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 16,
+                            ),
+                            itemCount: products.length,
+                            itemBuilder: (context, index) {
+                              final product = products[index];
+
+                              return ListTile(
+                                title: Text(product.name),
+                                subtitle: Text(product.getFormattedPrice()),
+                                leading: Text('${index + 1}°'),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () => openUpdateProductDialog(
+                                        product,
+                                      ),
+                                      icon: const Icon(Icons.edit),
+                                      splashRadius: 20,
+                                      color: AppColors.primary,
+                                    ),
+                                    const SizedBox(width: 8),
+                                    IconButton(
+                                      onPressed: () =>
+                                          openRemoveProductDialog(product),
+                                      icon: const Icon(Icons.delete),
+                                      color: Theme.of(context).errorColor,
+                                      splashRadius: 20,
+                                    ),
+                                  ],
+                                ),
+                                // onTap: () => context.go('/product/${product.id}'),
+                              );
+                            },
+                          );
+                        }),
+                  )
+                ],
               ),
             ),
           );

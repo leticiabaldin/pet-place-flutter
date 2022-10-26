@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-// ignore: unused_import
+import 'package:go_router/go_router.dart';
+import 'package:pet_place/pages/createAccount/create_new_account_page.dart';
 import 'package:pet_place/pages/dashboard/dashboard_page.dart';
 import 'package:pet_place/pages/login/login_page.dart';
+import 'package:flutter_web_plugins/flutter_web_plugins.dart';
+import 'package:pet_place/pages/profileUser/profile_user_page.dart';
+
 import 'firebase_options.dart';
 
 void main() async {
@@ -10,21 +14,50 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await configureApp();
 
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
+
+  final GoRouter _router = GoRouter(
+    routes: <GoRoute>[
+      GoRoute(
+        path: '/',
+        builder: (BuildContext context, GoRouterState state) {
+          return const LoginPage();
+        },
+      ),
+      GoRoute(
+        path: '/dashboard',
+        builder: (BuildContext context, GoRouterState state) {
+          return const DashboardPage();
+        },
+      ),
+      GoRoute(
+        path: '/create-account',
+        builder: (BuildContext context, GoRouterState state) {
+          return const CreateAccountPage();
+        },
+      ),GoRoute(
+        path: '/user-profile',
+        builder: (BuildContext context, GoRouterState state) {
+          return const UserProfilePage();
+        },
+      ),
+    ],
+  );
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: createMaterialColor(const Color(0xFF00297A)),
       ),
-      home: const LoginPage(),
+      routerConfig: _router,
     );
   }
 }
@@ -51,4 +84,6 @@ MaterialColor createMaterialColor(Color color) {
   return MaterialColor(color.value, swatch);
 }
 
-
+Future<void> configureApp() async {
+  setUrlStrategy(PathUrlStrategy());
+}
