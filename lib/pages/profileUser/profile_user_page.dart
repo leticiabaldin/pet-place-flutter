@@ -69,9 +69,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
                         ),
                       );
                     }
-                    final data =
-                        (snapshot.data as DocumentSnapshot<Map<String, dynamic>>)
-                            .data()!;
+                    final data = (snapshot.data
+                            as DocumentSnapshot<Map<String, dynamic>>)
+                        .data()!;
                     final user = UserProfile(
                       name: data['name'],
                       email: data['email'],
@@ -81,89 +81,105 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
                     return Expanded(
                       child: SingleChildScrollView(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
+                        child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 16),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Nome: ',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: user.name,
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
+                            Container(
+                              margin: const EdgeInsets.all(16),
+                              child: Image.asset('assets/userDogImage.jpg'),
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Theme.of(context).disabledColor,
                               ),
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              width: 100,
+                              height: 100,
                             ),
-                            const SizedBox(height: 16),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Email: ',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                    ),
+                            Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(height: 16),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Nome: ',
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: user.name,
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  TextSpan(
-                                    text: user.email,
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                ),
+                                const SizedBox(height: 16),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Email: ',
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: user.email,
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Telefone: ',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                    ),
+                                ),
+                                const SizedBox(height: 16),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Telefone: ',
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: user.phone,
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  TextSpan(
-                                    text: user.phone,
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                ),
+                                const SizedBox(height: 16),
+                                RichText(
+                                  text: TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: 'Endereço: ',
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: user.address,
+                                        style: TextStyle(
+                                          color: AppColors.primary,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Endereço: ',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: user.address,
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ],
                         ),
