@@ -17,7 +17,7 @@ class Product {
   final String? image;
 
   String getFormattedPrice() {
-    final formatPrice = NumberFormat('###,##.00', 'pt-BR');
+    final formatPrice = NumberFormat('###,##0.00', 'pt-BR');
     return 'R\$ ${formatPrice.format(price)}';
   }
 }

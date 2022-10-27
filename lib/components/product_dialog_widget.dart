@@ -36,6 +36,8 @@ class ProductDialogWidget extends StatefulWidget {
 }
 
 class _ProductDialogWidgetState extends State<ProductDialogWidget> {
+  bool loading = false;
+
   final formKey = GlobalKey<FormState>();
   final nameController = TextEditingController();
   final priceController = TextEditingController();
@@ -50,6 +52,10 @@ class _ProductDialogWidgetState extends State<ProductDialogWidget> {
   }
 
   Future<void> saveProduct() async {
+    if (loading) return;
+
+    setState(() => loading = true);
+
     final name = nameController.text.trim();
     final price = double.parse(priceController.text
         .trim()
@@ -62,12 +68,13 @@ class _ProductDialogWidgetState extends State<ProductDialogWidget> {
     final doc = widget.product != null
         ? collection.doc(widget.product!.id)
         : collection.doc();
-
-    await doc.set({
+    final data = <String, dynamic>{
       'name': name,
       'price': price,
       'description': description,
-    });
+    };
+
+    await doc.set(data, SetOptions(merge: true));
     Navigator.of(context).pop();
   }
 
@@ -150,7 +157,7 @@ class _ProductDialogWidgetState extends State<ProductDialogWidget> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: saveProduct,
+                      onPressed: loading ? null : saveProduct,
                       child: const Text('Salvar'),
                     ),
                   ),

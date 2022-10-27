@@ -32,8 +32,8 @@ class _DetailsPageState extends State<DetailsPage> {
           },
         ),
       ),
-      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-        future: products.get(),
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        stream: products.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(

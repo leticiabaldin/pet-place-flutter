@@ -78,22 +78,23 @@ class _DashboardPageState extends State<DashboardPage> {
           },
         ),
         actions: [
-          Padding(
-            padding: const EdgeInsets.only(right: 48),
-            child: TextButton.icon(
-              onPressed: () {
-                context.go('/user-profile');
-              },
-              icon: const Icon(
-                Icons.account_circle_outlined,
-                color: Colors.white,
-              ),
-              label: const Text(
-                'Meu perfil',
-                style: TextStyle(color: Colors.white, fontSize: 18),
+          if (FirebaseAuth.instance.currentUser != null)
+            Padding(
+              padding: const EdgeInsets.only(right: 48),
+              child: TextButton.icon(
+                onPressed: () {
+                  context.go('/user-profile');
+                },
+                icon: const Icon(
+                  Icons.account_circle_outlined,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  'Meu perfil',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
               ),
             ),
-          ),
         ],
       ),
       body: LayoutBuilder(
@@ -168,8 +169,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                   },
                                   child: ListTile(
                                     title: Text(product.name),
-                                    subtitle:
-                                    Text(product.getFormattedPrice()),
+                                    subtitle: Text(product.getFormattedPrice()),
                                     leading: Text('${index + 1}°'),
                                     trailing: Row(
                                       mainAxisSize: MainAxisSize.min,
@@ -177,8 +177,8 @@ class _DashboardPageState extends State<DashboardPage> {
                                         IconButton(
                                           onPressed: () =>
                                               openUpdateProductDialog(
-                                                product,
-                                              ),
+                                            product,
+                                          ),
                                           icon: const Icon(Icons.edit),
                                           splashRadius: 20,
                                           color: AppColors.primary,
@@ -186,8 +186,7 @@ class _DashboardPageState extends State<DashboardPage> {
                                         const SizedBox(width: 8),
                                         IconButton(
                                           onPressed: () =>
-                                              openRemoveProductDialog(
-                                                  product),
+                                              openRemoveProductDialog(product),
                                           icon: const Icon(Icons.delete),
                                           color: Theme.of(context).errorColor,
                                           splashRadius: 20,

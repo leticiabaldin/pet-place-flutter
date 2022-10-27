@@ -45,125 +45,133 @@ class _UserProfilePageState extends State<UserProfilePage> {
           },
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const HeaderWidget(title: 'Meus Dados'),
-            FutureBuilder(
-                future: reference.get(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return const Center(
-                      child: CircularProgressIndicator(),
+      body: Center(
+        child: Container(
+          constraints: const BoxConstraints(maxWidth: 1076),
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const HeaderWidget(title: 'Meus Dados'),
+              FutureBuilder(
+                  future: reference.get(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(
+                          (snapshot.error as FirebaseException).message ??
+                              'Um erro desconhecido ocorreu',
+                        ),
+                      );
+                    }
+                    final data =
+                        (snapshot.data as DocumentSnapshot<Map<String, dynamic>>)
+                            .data()!;
+                    final user = UserProfile(
+                      name: data['name'],
+                      email: data['email'],
+                      phone: data['phone'],
+                      address: data['address'],
                     );
-                  }
-                  if (snapshot.hasError) {
-                    return Center(
-                      child: Text(
-                        (snapshot.error as FirebaseException).message ??
-                            'Um erro desconhecido ocorreu',
+
+                    return Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 16),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Nome: ',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: user.name,
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Email: ',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: user.email,
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Telefone: ',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: user.phone,
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Endereço: ',
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: user.address,
+                                    style: TextStyle(
+                                      color: AppColors.primary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     );
-                  }
-                  final data =
-                      (snapshot.data as DocumentSnapshot<Map<String, dynamic>>)
-                          .data()!;
-                  final user = UserProfile(
-                    name: data['name'],
-                    email: data['email'],
-                    phone: data['phone'],
-                    address: data['address'],
-                  );
-                  return Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 16),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Nome: ',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            TextSpan(
-                              text: user.name,
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Email: ',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            TextSpan(
-                              text: user.email,
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Telefone: ',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            TextSpan(
-                              text: user.phone,
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      RichText(
-                        text: TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Endereço: ',
-                              style: TextStyle(
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            TextSpan(
-                              text: user.address,
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-          ],
+                  }),
+            ],
+          ),
         ),
       ),
     );
