@@ -2,29 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
+
 import 'package:pet_place/components/header_widget.dart';
 import 'package:pet_place/components/product_dialog_widget.dart';
 import 'package:pet_place/styles/colors.dart';
 
-class Product {
-  const Product({
-    required this.id,
-    required this.name,
-    required this.price,
-    required this.description,
-  });
-
-  final String id;
-  final String name;
-  final double price;
-  final String description;
-
-  String getFormattedPrice() {
-    final formatPrice = NumberFormat('###,##.00', 'pt-BR');
-    return 'R\$${formatPrice.format(price)}';
-  }
-}
+import '../../entities/product.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({Key? key}) : super(key: key);
@@ -82,15 +65,12 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF0F4FB),
       appBar: AppBar(
         title: Image.asset('assets/logo.png'),
-        titleSpacing: 182,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -101,7 +81,7 @@ class _DashboardPageState extends State<DashboardPage> {
           Padding(
             padding: const EdgeInsets.only(right: 48),
             child: TextButton.icon(
-              onPressed:(){
+              onPressed: () {
                 context.go('/user-profile');
               },
               icon: const Icon(
@@ -179,32 +159,44 @@ class _DashboardPageState extends State<DashboardPage> {
                             itemBuilder: (context, index) {
                               final product = products[index];
 
-                              return ListTile(
-                                title: Text(product.name),
-                                subtitle: Text(product.getFormattedPrice()),
-                                leading: Text('${index + 1}°'),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      onPressed: () => openUpdateProductDialog(
-                                        product,
-                                      ),
-                                      icon: const Icon(Icons.edit),
-                                      splashRadius: 20,
-                                      color: AppColors.primary,
+                              return Card(
+                                margin: const EdgeInsets.only(bottom: 12),
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                child: InkWell(
+                                  onTap: () {
+                                    context.go('/details/${product.id}');
+                                  },
+                                  child: ListTile(
+                                    title: Text(product.name),
+                                    subtitle:
+                                    Text(product.getFormattedPrice()),
+                                    leading: Text('${index + 1}°'),
+                                    trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                          onPressed: () =>
+                                              openUpdateProductDialog(
+                                                product,
+                                              ),
+                                          icon: const Icon(Icons.edit),
+                                          splashRadius: 20,
+                                          color: AppColors.primary,
+                                        ),
+                                        const SizedBox(width: 8),
+                                        IconButton(
+                                          onPressed: () =>
+                                              openRemoveProductDialog(
+                                                  product),
+                                          icon: const Icon(Icons.delete),
+                                          color: Theme.of(context).errorColor,
+                                          splashRadius: 20,
+                                        ),
+                                      ],
                                     ),
-                                    const SizedBox(width: 8),
-                                    IconButton(
-                                      onPressed: () =>
-                                          openRemoveProductDialog(product),
-                                      icon: const Icon(Icons.delete),
-                                      color: Theme.of(context).errorColor,
-                                      splashRadius: 20,
-                                    ),
-                                  ],
+                                    // onTap: () => context.go('/product/${product.id}'),
+                                  ),
                                 ),
-                                // onTap: () => context.go('/product/${product.id}'),
                               );
                             },
                           );

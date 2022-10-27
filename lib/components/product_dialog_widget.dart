@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:pet_place/styles/colors.dart';
 
+import '../entities/product.dart';
 import '../pages/dashboard/dashboard_page.dart';
 
 class CurrencyInputFormatter extends TextInputFormatter {
@@ -45,6 +47,28 @@ class _ProductDialogWidgetState extends State<ProductDialogWidget> {
     priceController.text =
         'R\$ ${product.price.toStringAsFixed(2)}'.replaceAll('.', ',');
     descriptionController.text = product.description;
+  }
+
+  Future<void> saveProduct() async {
+    final name = nameController.text.trim();
+    final price = double.parse(priceController.text
+        .trim()
+        .replaceFirst('R\$', '')
+        .trim()
+        .replaceAll('.', '')
+        .replaceAll(',', '.'));
+    final description = descriptionController.text.trim();
+    final collection = FirebaseFirestore.instance.collection('products');
+    final doc = widget.product != null
+        ? collection.doc(widget.product!.id)
+        : collection.doc();
+
+    await doc.set({
+      'name': name,
+      'price': price,
+      'description': description,
+    });
+    Navigator.of(context).pop();
   }
 
   @override
@@ -126,9 +150,7 @@ class _ProductDialogWidgetState extends State<ProductDialogWidget> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
+                      onPressed: saveProduct,
                       child: const Text('Salvar'),
                     ),
                   ),

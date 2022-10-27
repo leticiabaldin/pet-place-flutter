@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pet_place/pages/createAccount/create_new_account_page.dart';
 import 'package:pet_place/pages/dashboard/dashboard_page.dart';
+import 'package:pet_place/pages/details/details_page.dart';
 import 'package:pet_place/pages/login/login_page.dart';
 import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:pet_place/pages/profileUser/profile_user_page.dart';
@@ -41,10 +42,17 @@ class MyApp extends StatelessWidget {
         builder: (BuildContext context, GoRouterState state) {
           return const CreateAccountPage();
         },
-      ),GoRoute(
+      ),
+      GoRoute(
         path: '/user-profile',
         builder: (BuildContext context, GoRouterState state) {
           return const UserProfilePage();
+        },
+      ),
+      GoRoute(
+        path: '/details/:id',
+        builder: (BuildContext context, GoRouterState state) {
+          return DetailsPage(productId: state.params['id']!);
         },
       ),
     ],

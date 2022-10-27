@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +38,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
       backgroundColor: const Color(0xFFF0F4FB),
       appBar: AppBar(
         title: Image.asset('assets/logo.png'),
-        titleSpacing: 182,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
