@@ -116,15 +116,18 @@ class _DetailsPageState extends State<DetailsPage> {
                               text: TextSpan(
                                 children: [
                                   const TextSpan(
-                                      text: 'Valor do produto: ',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                      )),
+                                    text: 'Valor do produto: ',
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.black,
+                                    ),
+                                  ),
                                   TextSpan(
                                     text: product.getFormattedPrice(),
                                     style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w600,
+                                      color: Colors.black,
                                     ),
                                   ),
                                 ],

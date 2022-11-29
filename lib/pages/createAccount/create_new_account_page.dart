@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 import '../../styles/colors.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CreateAccountPage extends StatefulWidget {
   const CreateAccountPage({Key? key, this.next}) : super(key: key);
@@ -23,6 +25,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
   final addressController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  final cepController = TextEditingController();
 
   final phoneFormatter = MaskTextInputFormatter(
     mask: '(##) #####-####',
@@ -40,6 +43,23 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     }
   }
 
+  Future<void> consultCep() async {
+    final cep = cepController.text;
+    final url = Uri.parse('https://viacep.com.br/ws/$cep/json/');
+
+    http.Response response;
+    response = await http.get(url);
+
+    Map<String,dynamic> returnData = jsonDecode(response.body);
+
+    String logradouro = returnData["logradouro"];
+    String complemento = returnData["complemento"];
+
+    setState(() {
+      String endereco = '${logradouro},${complemento}';
+    });
+  }
+
   Future<void> createAccount() async {
     if (loading) return;
 
@@ -50,10 +70,14 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     final password = passwordController.text;
     final phone = phoneController.text;
     final address = addressController.text.trim();
+    final cep = cepController.text;
 
     final fireAuth = FirebaseAuth.instance;
     final firestore = FirebaseFirestore.instance;
     final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    String result;
+
 
     try {
       final credentials = await fireAuth.createUserWithEmailAndPassword(
@@ -224,12 +248,28 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                               return 'Campo obrigatório';
                             }
                           },
+                          keyboardType: TextInputType.number,
+                          controller: cepController,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            label: const Text('CEP:'),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Campo obrigatório';
+                            }
+                          },
                           controller: addressController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            label: const Text('Endereço completo:'),
+                            label: const Text('Endereço Completo:'),
                           ),
                         ),
                         const SizedBox(height: 16),
@@ -358,3 +398,5 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     );
   }
 }
+
+
