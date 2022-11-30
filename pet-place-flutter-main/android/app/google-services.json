@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "129647478753",
+    "project_id": "petplace-ec35f",
+    "storage_bucket": "petplace-ec35f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:129647478753:android:52325ab780970dd49e74a0",
+        "android_client_info": {
+          "package_name": "com.example.pet_place"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "129647478753-nd6bbt31qapiarmrupfg0gfkqo8pet80.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUaj0MxKxYxUrKMYnKpdriFYyTIjL38zY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "129647478753-nd6bbt31qapiarmrupfg0gfkqo8pet80.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
