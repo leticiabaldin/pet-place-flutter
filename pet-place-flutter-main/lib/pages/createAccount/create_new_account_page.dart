@@ -1,7 +1,7 @@
 //import 'dart:ffi';
 // ignore: avoid_web_libraries_in_flutter, unused_import
 import 'dart:html';
-import 'package:flutter/gestures.dart';
+//import 'package:flutter/gestures.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -66,7 +66,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
     setState(() {
       String endereco = logradouro + complemento + bairro + localidade + uf;
-      addressController.text = endereco.toString();
+      endereco = addressController.text;
       //print(endereco);
     });
   }
@@ -266,7 +266,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             ),
                             label: const Text('CEP:'),
                           ),
-                          onChanged: consultaCep,
+                          onChanged: onChanged,
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -408,5 +408,9 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         ],
       ),
     );
+  }
+
+  void onChanged(String endereco) {
+    String endereco = addressController.text;
   }
 }
