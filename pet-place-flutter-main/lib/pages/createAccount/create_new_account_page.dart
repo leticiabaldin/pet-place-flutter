@@ -1,7 +1,3 @@
-//import 'dart:ffi';
-// ignore: avoid_web_libraries_in_flutter, unused_import
-import 'dart:html';
-//import 'package:flutter/gestures.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,12 +45,11 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     }
   }
 
-  Future<void> consultaCep(endereco) async {
+  Future<void> consultaCep() async {
     final cep = cepController.text;
     final url = Uri.parse('https://viacep.com.br/ws/$cep/json/');
 
-    http.Response response;
-    response = await http.get(url);
+    final response = await http.get(url);
 
     Map<String, dynamic> returnData = json.decode(response.body);
 
@@ -65,8 +60,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     String uf = returnData["uf"];
 
     setState(() {
-      String endereco = logradouro + complemento + bairro + localidade + uf;
-      endereco = addressController.text;
+      String endereco = '$logradouro $complemento $bairro $localidade $uf';
+      addressController.text = endereco;
       //print(endereco);
     });
   }
@@ -266,7 +261,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             ),
                             label: const Text('CEP:'),
                           ),
-                          onChanged: onChanged,
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (value) => consultaCep(),
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -276,13 +272,13 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             }
                           },
                           controller: addressController,
+                          textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             label: const Text('Endereço Completo:'),
                           ),
-                          onChanged: (value) => endereco,
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -408,9 +404,5 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
         ],
       ),
     );
-  }
-
-  void onChanged(String endereco) {
-    String endereco = addressController.text;
   }
 }
