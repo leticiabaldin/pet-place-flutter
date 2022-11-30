@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:pet_place/styles/colors.dart';
 
 import '../entities/product.dart';
-import '../pages/dashboard/dashboard_page.dart';
+// import '../pages/dashboard/dashboard_page.dart';
 
 class CurrencyInputFormatter extends TextInputFormatter {
   @override
@@ -109,7 +109,7 @@ class _ProductDialogWidgetState extends State<ProductDialogWidget> {
                 controller: nameController,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  disabledBorder: OutlineInputBorder(),
+                  disabledBorder: const OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.primary),
                   ),
@@ -121,7 +121,7 @@ class _ProductDialogWidgetState extends State<ProductDialogWidget> {
                 controller: priceController,
                 decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  disabledBorder: OutlineInputBorder(),
+                  disabledBorder: const OutlineInputBorder(),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: AppColors.primary),
                   ),

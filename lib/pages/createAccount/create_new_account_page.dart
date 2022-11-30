@@ -37,26 +37,32 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
 
   bool loading = false;
 
+  String endereco = '';
+
   void checkPasswordController() {
     if (passwordController.text != password) {
       setState(() => password = passwordController.text);
     }
   }
 
-  Future<void> consultCep() async {
+  Future<void> consultaCep() async {
     final cep = cepController.text;
     final url = Uri.parse('https://viacep.com.br/ws/$cep/json/');
 
-    http.Response response;
-    response = await http.get(url);
+    final response = await http.get(url);
 
-    Map<String,dynamic> returnData = jsonDecode(response.body);
+    Map<String, dynamic> returnData = json.decode(response.body);
 
     String logradouro = returnData["logradouro"];
     String complemento = returnData["complemento"];
+    String bairro = returnData["bairro"];
+    String localidade = returnData["localidade"];
+    String uf = returnData["uf"];
 
     setState(() {
-      String endereco = '${logradouro},${complemento}';
+      String endereco = '$logradouro $complemento $bairro $localidade $uf';
+      addressController.text = endereco;
+      //print(endereco);
     });
   }
 
@@ -77,7 +83,6 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     final scaffoldMessenger = ScaffoldMessenger.of(context);
 
     String result;
-
 
     try {
       final credentials = await fireAuth.createUserWithEmailAndPassword(
@@ -179,7 +184,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            label: Text('Nome Completo:'),
+                            label: const Text('Nome Completo:'),
                           ),
                           keyboardType: TextInputType.name,
                           textInputAction: TextInputAction.next,
@@ -202,7 +207,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            label: Text('Email:'),
+                            label: const Text('Email:'),
                           ),
                           keyboardType: TextInputType.emailAddress,
                           textInputAction: TextInputAction.next,
@@ -256,6 +261,8 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             ),
                             label: const Text('CEP:'),
                           ),
+                          textInputAction: TextInputAction.next,
+                          onFieldSubmitted: (value) => consultaCep(),
                         ),
                         const SizedBox(height: 16),
                         TextFormField(
@@ -265,6 +272,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             }
                           },
                           controller: addressController,
+                          textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
@@ -298,7 +306,7 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            label: Text('Confirmar senha:'),
+                            label: const Text('Confirmar senha:'),
                           ),
                           obscureText: true,
                           keyboardType: TextInputType.visiblePassword,
@@ -398,5 +406,3 @@ class _CreateAccountPageState extends State<CreateAccountPage> {
     );
   }
 }
-
-
